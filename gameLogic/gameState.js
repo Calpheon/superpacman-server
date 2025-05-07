@@ -25,3 +25,20 @@ function randomPosition() {
     return { x: 5, y: 5 }; // Posisi default sebagai fallback
   }
 }
+
+/**
+ * Menambahkan player baru ke game state
+ */
+function addPlayer(id, playerData) {
+  gameState.players[id] = {
+    ...playerData,
+    position: randomPosition(),
+    score: 0,
+    alive: true,
+    lives: 3,
+    invulnerable: false,
+    invulnerableTimer: 0,
+    ready: false,
+    movementHistory: [],
+  };
+}
