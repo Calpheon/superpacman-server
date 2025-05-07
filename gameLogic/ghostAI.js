@@ -45,3 +45,27 @@ function trackPlayerMovements(gameState) {
     }
   }
 }
+
+/**
+ * Temukan pemain terdekat
+ */
+function findNearestPlayer(ghost, gameState) {
+  let nearestPlayer = null;
+  let minDist = Infinity;
+
+  for (const id in gameState.players) {
+    const player = gameState.players[id];
+    if (!player.alive) continue;
+
+    const dist =
+      Math.abs(player.position.x - ghost.position.x) +
+      Math.abs(player.position.y - ghost.position.y);
+
+    if (dist < minDist) {
+      minDist = dist;
+      nearestPlayer = player;
+    }
+  }
+
+  return { player: nearestPlayer, distance: minDist };
+}
