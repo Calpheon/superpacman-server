@@ -109,3 +109,48 @@ function eatPoint(playerId, gameState) {
     gameState.points.splice(pointIndex, 1);
   }
 }
+
+/**
+ * Inisialisasi poin-poin di board
+ */
+function initPoints(gameState) {
+  const NUM_POINTS = INITIAL_POINTS;
+  const points = [];
+  const occupiedPositions = new Set();
+
+  // Track posisi yang sudah ditempati
+  if (gameState && gameState.players) {
+    for (const id in gameState.players) {
+      const player = gameState.players[id];
+      occupiedPositions.add(`${player.position.x},${player.position.y}`);
+    }
+  }
+
+  if (gameState && gameState.ghosts) {
+    gameState.ghosts.forEach((ghost) => {
+      occupiedPositions.add(`${ghost.position.x},${ghost.position.y}`);
+    });
+  }
+
+  // Generate poin random di posisi yang kosong
+  for (let i = 0; i < NUM_POINTS; i++) {
+    let x, y;
+    let attempts = 0;
+    const maxAttempts = 50;
+
+    // Cari posisi yang belum ditempati
+    do {
+      x = Math.floor(Math.random() * BOARD_SIZE);
+      y = Math.floor(Math.random() * BOARD_SIZE);
+      attempts++;
+    } while (occupiedPositions.has(`${x},${y}`) && attempts < maxAttempts);
+
+    // Jika ditemukan spot kosong atau sudah terlalu banyak percobaan
+    if (attempts < maxAttempts) {
+      points.push({ x, y });
+      occupiedPositions.add(`${x},${y}`);
+    }
+  }
+
+  return points;
+}
