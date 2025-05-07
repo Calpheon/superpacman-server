@@ -49,3 +49,39 @@ function addPlayer(id, playerData) {
 function removePlayer(id) {
   delete gameState.players[id];
 }
+
+/**
+ * Memindahkan player ke posisi baru
+ */
+function movePlayer(id, moveData) {
+  if (!gameState.players[id] || !gameState.players[id].alive) {
+    console.warn(`Can't move player ${id}: not found or not alive`);
+    return;
+  }
+
+  // Validasi posisi
+  if (
+    !moveData.position ||
+    typeof moveData.position.x !== "number" ||
+    typeof moveData.position.y !== "number"
+  ) {
+    console.error("Invalid position data:", moveData);
+    return;
+  }
+
+  const { x, y } = moveData.position;
+
+  // Pastikan posisi dalam batas board
+  if (x < 0 || x >= BOARD_SIZE || y < 0 || y >= BOARD_SIZE) {
+    console.warn(`Position out of bounds: (${x}, ${y})`);
+    return;
+  }
+
+  // Simpan posisi sebelumnya
+  gameState.players[id].previousPosition = {
+    ...gameState.players[id].position,
+  };
+
+  // Update posisi
+  gameState.players[id].position = { x, y };
+}
