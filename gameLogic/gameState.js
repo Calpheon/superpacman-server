@@ -42,3 +42,10 @@ function addPlayer(id, playerData) {
     movementHistory: [],
   };
 }
+
+/**
+ * Menghapus player dari game state
+ */
+function removePlayer(id) {
+  delete gameState.players[id];
+}
