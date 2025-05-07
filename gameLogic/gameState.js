@@ -154,3 +154,55 @@ function initPoints(gameState) {
 
   return points;
 }
+
+/**
+ * Reset seluruh game state
+ */
+function resetGameState() {
+  console.log("Resetting game state");
+
+  try {
+    // Set nilai default
+    gameState.ghostSpeed = 300;
+    gameState.points = initPoints(gameState);
+    gameState.ghosts = [
+      {
+        id: "ghost1",
+        position: { x: 10, y: 10 },
+        personality: "chaser",
+      },
+    ];
+
+    // Reset posisi player
+    for (const id in gameState.players) {
+      if (gameState.players[id]) {
+        gameState.players[id].position = {
+          x: 1 + Math.floor(Math.random() * 5),
+          y: 1 + Math.floor(Math.random() * 5),
+        };
+        gameState.players[id].ready = false;
+        gameState.players[id].alive = true;
+        gameState.players[id].invulnerable = false;
+        gameState.players[id].invulnerableTimer = 0;
+        gameState.players[id].score = 0; // Reset skor ketika game dimulai ulang
+      }
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error resetting game state:", error);
+    return false;
+  }
+}
+
+module.exports = {
+  gameState,
+  addPlayer,
+  removePlayer,
+  movePlayer,
+  eatPoint,
+  initPoints,
+  randomPosition,
+  resetGameState,
+  BOARD_SIZE,
+};
