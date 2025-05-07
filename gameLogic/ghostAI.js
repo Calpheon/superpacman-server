@@ -84,3 +84,39 @@ function moveTowards(current, target) {
     return { x: current.x + dx, y: current.y };
   }
 }
+
+/**
+ * Cari posisi aman jauh dari hantu
+ */
+function findSafePosition(gameState) {
+  let attempts = 0;
+  const maxAttempts = 50;
+
+  while (attempts < maxAttempts) {
+    const pos = {
+      x: Math.floor(Math.random() * BOARD_SIZE),
+      y: Math.floor(Math.random() * BOARD_SIZE),
+    };
+
+    // Periksa jarak dari semua hantu
+    let isSafe = true;
+    for (const ghost of gameState.ghosts) {
+      const distance =
+        Math.abs(ghost.position.x - pos.x) + Math.abs(ghost.position.y - pos.y);
+      if (distance < 5) {
+        // Minimal 5 langkah dari hantu terdekat
+        isSafe = false;
+        break;
+      }
+    }
+
+    if (isSafe) return pos;
+    attempts++;
+  }
+
+  // Fallback jika tidak ada posisi aman
+  return {
+    x: Math.floor(Math.random() * BOARD_SIZE),
+    y: Math.floor(Math.random() * BOARD_SIZE),
+  };
+}
