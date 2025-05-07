@@ -85,3 +85,27 @@ function movePlayer(id, moveData) {
   // Update posisi
   gameState.players[id].position = { x, y };
 }
+
+/**
+ * Memeriksa apakah pemain bisa mengambil poin di posisinya saat ini
+ */
+function eatPoint(playerId, gameState) {
+  if (!gameState?.players?.[playerId]) {
+    console.warn(`Player ${playerId} not found in gameState`);
+    return;
+  }
+
+  const player = gameState.players[playerId];
+  if (!gameState.points) {
+    gameState.points = initPoints(gameState);
+  }
+
+  const pointIndex = gameState.points.findIndex(
+    (point) => point.x === player.position.x && point.y === player.position.y
+  );
+
+  if (pointIndex !== -1) {
+    player.score = (player.score || 0) + 1;
+    gameState.points.splice(pointIndex, 1);
+  }
+}
