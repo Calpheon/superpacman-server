@@ -69,3 +69,18 @@ function findNearestPlayer(ghost, gameState) {
 
   return { player: nearestPlayer, distance: minDist };
 }
+
+/**
+ * Bergerak menuju target
+ */
+function moveTowards(current, target) {
+  const dx = target.x > current.x ? 1 : target.x < current.x ? -1 : 0;
+  const dy = target.y > current.y ? 1 : target.y < current.y ? -1 : 0;
+
+  // Bergantian antara gerakan horizontal dan vertikal
+  if (Math.random() > 0.5 || dx === 0) {
+    return { x: current.x, y: current.y + dy };
+  } else {
+    return { x: current.x + dx, y: current.y };
+  }
+}
